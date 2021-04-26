@@ -1,32 +1,29 @@
 {
   "name": "12-mysql-employee-tracker",
   "version": "1.0.0",
-  "description": " An application that manages a company's employees using node, inquirer, and MySQL.",
+  "description": "An application that manages a company's employees using node, inquirer, and MySQL.",
   "main": "index.js",
   "directories": {
     "lib": "lib"
   },
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirerer": "^0.1.3",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "npm test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emilymetzgar/12-mysql-employee-tracker.git"
   },
-  "keywords": [
-    "mysql",
-    "node",
-    "inquirerer"
-  ],
-  "author": "emily metzgar",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/emilymetzgar/12-mysql-employee-tracker/issues"
   },
-  "homepage": "https://github.com/emilymetzgar/12-mysql-employee-tracker#readme",
-  "dependencies": {
-    "console.table": "^0.10.0",
-    "inquirerer": "^0.1.3",
-    "mysql": "^2.18.1"
-  }
+  "homepage": "https://github.com/emilymetzgar/12-mysql-employee-tracker#readme"
 }
