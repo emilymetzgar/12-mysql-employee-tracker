@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-const cTable = require('console.table');
 
 // create the connection information for the sql database
 const connection = mysql.createConnection({
@@ -14,6 +13,9 @@ const connection = mysql.createConnection({
 
   // Your password
   password: 'rootie',
-  database: 'employee_tracker-db',
+  database: 'employee_tracker_db',
 });
+
+
+
 

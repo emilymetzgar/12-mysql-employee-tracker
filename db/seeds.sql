@@ -1,4 +1,7 @@
-INSERT INTO department (deptName)
+
+
+INSERT INTO department 
+    (deptName)
 VALUES
 
 ('Sales'),
@@ -6,10 +9,9 @@ VALUES
 ('Finance'),
 ('Legal');
 
---why no id in () here?
-INSERT INTO role (title, salary, deptId)
+INSERT INTO role 
+    (title, salary, deptId)
 VALUES 
-(title, salary, id)
 
 ('Sales Lead', 100000, 1),
 ('Salesperson', 80000, 2),
@@ -19,13 +21,14 @@ VALUES
 ('Legal Team Lead', 250000, 7),
 ('Lawyer', 190000, 8);
 
-INSERT INTO employee (firstName, lastName, roleId, managerId)
+INSERT INTO employee 
+    (firstName, lastName, roleId, managerId)
 VALUES
-('John', 'Doe', 1),
-('Mike', 'Chan', 2),
-('Ashley', 'Rodriguez', 3),
-('Kevin', 'Tupik', 4),
-
-('Malia', 'Brown', 6),
-('Sarah', 'Lourd', 7),
-('Tom', 'Allen', 8);
+('John', 'Doe', 1, NULL),
+('Mike', 'Chan', 2,1),
+('Ashley', 'Rodriguez', 3, NULL),
+('Kevin', 'Tupik', 4, 3),
+('Kunal', 'Singh', 5, NULL),
+('Malia', 'Brown', 6, 5),
+('Sarah', 'Lourd', 7, NULL),
+('Tom', 'Allen', 8, 7);
