@@ -59,3 +59,6 @@ VALUES
 ('Sarah', 'Lourd', 7, NULL),
 ('Tom', 'Allen', 8, 7);
 
+SELECT * FROM employee;
+SELECT * FROM department;
+SELECT * FROM employeeRole;
