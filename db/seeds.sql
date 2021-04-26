@@ -1,3 +1,29 @@
+DROP DATABASE IF EXISTS employee_tracker_db;
+CREATE DATABASE employee_tracker_db;
+
+USE employee_tracker_db;
+
+CREATE TABLE department (
+  id INT AUTO_INCREMENT NOT NULL,
+  deptName VARCHAR(30) NULL,
+  PRIMARY KEY (id)
+);
+CREATE TABLE employee (
+  id INT AUTO_INCREMENT NOT NULL,
+  firstName VARCHAR(30) NOT NULL,
+  lastName VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id),
+  roleId INT NOT NULL,
+  managerId INT NULL references employee
+);
+
+CREATE TABLE employeeRole (
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(30),
+  salary DECIMAL (10, 4),
+  PRIMARY KEY (id),
+  deptId INT NOT NULL
+);
 
 
 INSERT INTO department 
@@ -9,7 +35,7 @@ VALUES
 ('Finance'),
 ('Legal');
 
-INSERT INTO role 
+INSERT INTO employeeRole
     (title, salary, deptId)
 VALUES 
 
@@ -32,3 +58,4 @@ VALUES
 ('Malia', 'Brown', 6, 5),
 ('Sarah', 'Lourd', 7, NULL),
 ('Tom', 'Allen', 8, 7);
+
