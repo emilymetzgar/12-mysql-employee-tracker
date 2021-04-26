@@ -3,24 +3,24 @@ CREATE DATABASE employee_tracker_db;
 USE employee_tracker_db;
 
 CREATE TABLE department(
-  id INTEGER(11) AUTO_INCREMENT NOT NULL,
-  authorId INTEGER(11),
-  title VARCHAR(100),
+  id INT AUTO_INCREMENT NOT NULL,
+  department_name VARCHAR(30),
   PRIMARY KEY (id)
 );
 
 CREATE TABLE role(
-  id INTEGER(11) AUTO_INCREMENT NOT NULL,
-  firstName VARCHAR(100),
-  lastName VARCHAR(100),
+  id INT AUTO_INCREMENT NOT NULL,
+  title VARCHAR(30),
+  salary DECIMAL ,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE employee(
-  id INTEGER(11) AUTO_INCREMENT NOT NULL,
-  firstName VARCHAR(100),
-  lastName VARCHAR(100),
-  PRIMARY KEY (id)
+  id INT AUTO_INCREMENT NOT NULL,
+  firstName VARCHAR(30),
+  lastName VARCHAR(30),
+  PRIMARY KEY (id),
+  FOREIGN KEY (role_id) REFERENCES role
 );
 
 SELECET * FROM department;
