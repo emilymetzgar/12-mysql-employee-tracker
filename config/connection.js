@@ -11,5 +11,10 @@ const sequelize = new Sequelize(
     port: 3306
   }
 );
+connection.connect((err) => {
+  if (err) throw err;
+  console.log(`connected as id ${connection.threadId}`);
+  connection.end();
+});
 
 module.exports = sequelize;
