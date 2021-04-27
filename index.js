@@ -10,21 +10,28 @@ const update = require('./lib/update');
 
 
 const start = () => {
-    inquirer.prompt([
+    inquirer
+    .prompt([
         {
             type: "list",
             name: "option",
             message: "What would you like to do?",
-            choices: ["View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "Quit"]
+            choices: ["View All Employees", 
+            "Add Employee", 
+            "Update Employee Role", 
+            "View All Roles", "Add Role", 
+            "View All Departments", "Add Department", 
+            "Exit"]
         }
-    ]).then(async (data) => {
-        switch (data.option) {
+        
+    ]).then((answer) => { 
+        switch (answer.action) {
             case "View All Employees":
                 view.viewAllEmployees();
                 break;
 
             case "Add Employee":
-                add.addEmp();
+                add.addEmployee();
                 break;
 
             case "Update Employee Role":
@@ -36,11 +43,11 @@ const start = () => {
                 break;
 
             case "Add Role":
-                add.addRole();
+                add.addRoles();
                 break;
 
             case "View All Departments":
-                view.viewAllDept();
+                view.viewAllDepts();
                 break;
 
             case "Add Department":

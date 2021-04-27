@@ -25,6 +25,12 @@ CREATE TABLE employeeRole (
   deptId INT NOT NULL
 );
 
+CREATE TABLE manager (
+    id INT NOT NULL AUTO_INCREMENT,
+    firstNameVARCHAR(30),
+    lastName VARCHAR(30),
+    PRIMARY KEY (id)
+);
 
 INSERT INTO department 
     (deptName)
