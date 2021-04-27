@@ -51,7 +51,7 @@ const start = () => {
                 break;
 
             case "Add Department":
-                add.addDept();
+                add.addDepts();
                 break;
 
             case "Exit":

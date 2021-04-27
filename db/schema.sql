@@ -27,7 +27,7 @@ CREATE TABLE employeeRole (
 
 CREATE TABLE manager (
     id INT NOT NULL AUTO_INCREMENT,
-    firstNameVARCHAR(30),
+    firstName VARCHAR(30),
     lastName VARCHAR(30),
     PRIMARY KEY (id)
 );
