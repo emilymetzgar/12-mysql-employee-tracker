@@ -19,6 +19,7 @@
   "homepage": "https://github.com/emilymetzgar/12-mysql-employee-tracker#readme",
   "dependencies": {
     "inquirer": "^8.0.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "sequelize": "^6.6.2"
   }
 }
