@@ -1,7 +1,7 @@
 const connection = require("./config/connection");
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const cTable = require('console.table');
+const cTable = require("console.table");
 
 function start() {
     inquirer
@@ -54,3 +54,12 @@ function start() {
 }
 
 start();
+
+function viewDept () {
+    const queryDept = "SELECT * FROM department";
+    connection.query(queryDept, (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      start();
+    });
+  }
