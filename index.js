@@ -31,7 +31,7 @@ const start = () => {
                 break;
 
             case "Add Employee":
-                add.addEmployee();
+                add.addEmployees();
                 break;
 
             case "Update Employee Role":
@@ -64,3 +64,4 @@ const start = () => {
     });
 }
 
+start ();
