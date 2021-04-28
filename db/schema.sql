@@ -1,39 +1,36 @@
+--i need to add manager, foregin key info, and manager id number
+
 DROP DATABASE IF EXISTS employee_tracker_db;
+
 CREATE DATABASE employee_tracker_db;
 
 USE employee_tracker_db;
 
+
 CREATE TABLE department (
-  id INT AUTO_INCREMENT NOT NULL,
-  deptName VARCHAR(30) NULL,
-  PRIMARY KEY (id)
-);
-CREATE TABLE employee (
-  id INT AUTO_INCREMENT NOT NULL,
-  firstName VARCHAR(30) NOT NULL,
-  lastName VARCHAR(30) NOT NULL,
-  PRIMARY KEY (id),
-  roleId INT NOT NULL,
-  managerId INT NULL references employee
+     id INTEGER auto_increment NOT NULL,
+     department_name VARCHAR (30) NULL,
+     PRIMARY KEY (id)
 );
 
-CREATE TABLE employeeRole (
-  id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(30),
-  salary DECIMAL (10, 4),
-  PRIMARY KEY (id),
-  deptId INT NOT NULL
+CREATE TABLE job  (
+    id INTEGER auto_increment NOT NULL,
+    job_title VARCHAR (30),
+    salary DECIMAL (10,4),
+    PRIMARY KEY (id),
+    department_id INT NOT NULL
 );
 
-CREATE TABLE manager (
-    id INT NOT NULL AUTO_INCREMENT,
-    firstName VARCHAR(30),
-    lastName VARCHAR(30),
-    PRIMARY KEY (id)
+CREATE TABLE employee(
+id INTEGER auto_increment NOT NULL, 
+first_name VARCHAR(30), 
+last_name VARCHAR(30),
+role_id INT NOT NULL, 
+PRIMARY KEY (id)
 );
 
 INSERT INTO department 
-    (deptName)
+    (department_name)
 VALUES
 
 ('Sales'),
@@ -41,8 +38,8 @@ VALUES
 ('Finance'),
 ('Legal');
 
-INSERT INTO employeeRole
-    (title, salary, deptId)
+INSERT INTO job
+    (job_title, salary, department_id)
 VALUES 
 
 ('Sales Lead', 100000, 1),
@@ -54,17 +51,18 @@ VALUES
 ('Lawyer', 190000, 8);
 
 INSERT INTO employee 
-    (firstName, lastName, roleId, managerId)
+    (first_name, last_name, role_id)
 VALUES
-('John', 'Doe', 1, NULL),
-('Mike', 'Chan', 2,1),
-('Ashley', 'Rodriguez', 3, NULL),
-('Kevin', 'Tupik', 4, 3),
-('Kunal', 'Singh', 5, NULL),
-('Malia', 'Brown', 6, 5),
-('Sarah', 'Lourd', 7, NULL),
-('Tom', 'Allen', 8, 7);
+('John', 'Doe', 1),
+('Mike', 'Chan', 2),
+('Ashley', 'Rodriguez', 3),
+('Kevin', 'Tupik', 4),
+('Kunal', 'Singh', 5),
+('Malia', 'Brown', 6),
+('Sarah', 'Lourd', 7),
+('Tom', 'Allen', 8);
+
 
 SELECT * FROM employee;
 SELECT * FROM department;
-SELECT * FROM employeeRole;
+SELECT * FROM job;
