@@ -119,7 +119,9 @@ function addEmployee() {
                 message: "Add Employee's ID",
                 type: "list",
                 choices: [
-                    'select here',
+                 'Employee ID will be 1',
+                 'Employee has to be 1',
+                 'Click here for 1',
                 ],
             },
     
@@ -148,7 +150,7 @@ function addEmployee() {
                 [
                     answers.first_name,
                     answers.last_name,
-                    answers.job_title,
+                    answers.job_name,
                 ],
                 (err, res) => {
                     if (err) throw err;
