@@ -26,6 +26,7 @@ id INTEGER auto_increment NOT NULL,
 first_name VARCHAR(30), 
 last_name VARCHAR(30),
 role_id INT NOT NULL, 
+job_name VARCHAR (30),
 PRIMARY KEY (id)
 );
 
@@ -51,14 +52,14 @@ VALUES
 ('Lawyer', 190000, 8);
 
 INSERT INTO employee 
-    (first_name, last_name, role_id, job_title)
+    (first_name, last_name, role_id, job_name)
 VALUES
-('John', 'Doe', 1),
-('Mike', 'Chan', 2),
-('Ashley', 'Rodriguez', 3),
-('Kevin', 'Tupik', 4),
-('Kunal', 'Singh', 5),
-('Malia', 'Brown', 6),
-('Sarah', 'Lourd', 7),
-('Tom', 'Allen', 8);
+('John', 'Doe', 1, 'Sales Lead'),
+('Mike', 'Chan', 2, 'Salesperson'),
+('Ashley', 'Rodriguez', 3, 'Lead Engineer'),
+('Kevin', 'Tupik', 4, 'Software Engineer'),
+('Kunal', 'Singh', 5, 'Accountant'),
+('Malia', 'Brown', 6, 'Legal Team Lead'),
+('Sarah', 'Lourd', 7, 'Legal Team Lead'),
+('Tom', 'Allen', 8, 'Lawyer');
 

@@ -113,8 +113,18 @@ function addEmployee() {
                 message: "Add Employee's last name",
                 type: "input",
             },
+
             {
-                name: "job_title",
+                name: "role_id",
+                message: "Add Employee's ID",
+                type: "list",
+                choices: [
+                    'select here',
+                ],
+            },
+    
+            {
+                name: "job_name",
                 message: "Add Employee's role",
                 type: "list",
                 choices: [
@@ -132,7 +142,7 @@ function addEmployee() {
 
         .then((answers) => {
             const query =
-                "INSERT INTO employee (first_name, last_name, job_title) VALUES (?,?,?)"
+                "INSERT INTO employee (first_name, last_name, role_id, job_name) VALUES (?,?, 1 ,?)"
             connection.query(
                 query,
                 [
