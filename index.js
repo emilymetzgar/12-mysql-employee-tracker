@@ -1,7 +1,25 @@
-const connection = require("./config/connection");
-const mysql = require("mysql");
-const inquirer = require("inquirer");
-const cTable = require("console.table");
+const mysql = require('mysql');
+const inquirer = require('inquirer');
+const cTable = require('console.table');
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+  
+    // Your port; if not 3306
+    port: 3306,
+  
+    // Your username
+    user: 'root',
+  
+    // Your password
+    password: 'rootie',
+    database: 'employee_tracker_db',
+  });
+// connect to the mysql server and sql database
+connection.connect((err) => {
+    if (err) throw err;
+    // run the start function after the connection is made to prompt the user
+});
 
 function start() {
     inquirer
@@ -26,11 +44,11 @@ function start() {
             if (answers.home === "View All From Department") {
                 viewDept();
 
-            } else if (answers.home === "View All Roles") {
-                viewRole();
-
             } else if (answers.home === "View All Employees") {
                 viewEmployee();
+
+            } else if (answers.home === "View All Roles") {
+                viewRole();
 
             } else if (answers.home === "View All Employees") {
                 addEmployee();
@@ -52,14 +70,32 @@ function start() {
             }
         });
 }
-
 start();
 
 function viewDept () {
-    const queryDept = "SELECT * FROM department";
-    connection.query(queryDept, (err, res) => {
+    const query = "SELECT * FROM department";
+    connection.query(query, (err, res) => {
       if (err) throw err;
       console.table(res);
       start();
     });
   }
+
+  function viewEmployee () {
+    const query= "SELECT * FROM employee";
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      start();
+    });
+  }
+
+  function viewRole() {
+    const query = "SELECT * FROM job";
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      start();
+    });
+  }
+  

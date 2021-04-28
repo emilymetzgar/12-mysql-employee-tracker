@@ -62,7 +62,3 @@ VALUES
 ('Sarah', 'Lourd', 7),
 ('Tom', 'Allen', 8);
 
-
-SELECT * FROM employee;
-SELECT * FROM department;
-SELECT * FROM job;
