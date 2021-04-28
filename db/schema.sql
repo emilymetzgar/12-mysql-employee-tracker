@@ -51,7 +51,7 @@ VALUES
 ('Lawyer', 190000, 8);
 
 INSERT INTO employee 
-    (first_name, last_name, role_id)
+    (first_name, last_name, role_id, job_title)
 VALUES
 ('John', 'Doe', 1),
 ('Mike', 'Chan', 2),

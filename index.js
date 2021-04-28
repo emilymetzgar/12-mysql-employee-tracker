@@ -50,7 +50,7 @@ function start() {
             } else if (answers.home === "View All Roles") {
                 viewRole();
 
-            } else if (answers.home === "Add An Employees") {
+            } else if (answers.home === "Add An Employee") {
                 addEmployee();
 
             } else if (answers.home === "Add A Role") {
@@ -132,7 +132,7 @@ function addEmployee() {
 
         .then((answers) => {
             const query =
-                "INSERT INTO employee (first_name, last_name, job_title) VALUES (?,?,?)";
+                "INSERT INTO employee (first_name, last_name, job_title) VALUES (?,?,?)"
             connection.query(
                 query,
                 [
