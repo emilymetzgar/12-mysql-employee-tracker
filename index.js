@@ -4,17 +4,17 @@ const cTable = require('console.table');
 
 const connection = mysql.createConnection({
     host: 'localhost',
-  
+
     // Your port; if not 3306
     port: 3306,
-  
+
     // Your username
     user: 'root',
-  
+
     // Your password
     password: 'rootie',
     database: 'employee_tracker_db',
-  });
+});
 // connect to the mysql server and sql database
 connection.connect((err) => {
     if (err) throw err;
@@ -50,7 +50,7 @@ function start() {
             } else if (answers.home === "View All Roles") {
                 viewRole();
 
-            } else if (answers.home === "View All Employees") {
+            } else if (answers.home === "Add An Employees") {
                 addEmployee();
 
             } else if (answers.home === "Add A Role") {
@@ -72,30 +72,86 @@ function start() {
 }
 start();
 
-function viewDept () {
+function viewDept() {
     const query = "SELECT * FROM department";
     connection.query(query, (err, res) => {
-      if (err) throw err;
-      console.table(res);
-      start();
+        if (err) throw err;
+        console.table(res);
+        start();
     });
-  }
+}
 
-  function viewEmployee () {
-    const query= "SELECT * FROM employee";
+function viewEmployee() {
+    const query = "SELECT * FROM employee";
     connection.query(query, (err, res) => {
-      if (err) throw err;
-      console.table(res);
-      start();
+        if (err) throw err;
+        console.table(res);
+        start();
     });
-  }
+}
 
-  function viewRole() {
+function viewRole() {
     const query = "SELECT * FROM job";
     connection.query(query, (err, res) => {
-      if (err) throw err;
-      console.table(res);
-      start();
+        if (err) throw err;
+        console.table(res);
+        start();
     });
-  }
-  
+}
+
+//add employee
+
+function addEmployee() {
+    inquirer
+        .prompt([{
+                name: "first_name",
+                message: "Add Employee's first name",
+                type: "input",
+            },
+            {
+                name: "last_name",
+                message: "Add Employee's last name",
+                type: "input",
+            },
+            {
+                name: "job_title",
+                message: "Add Employee's role",
+                type: "list",
+                choices: [
+                    'Sales Lead',
+                    'Salesperson',
+                    'Lead Engineer',
+                    'Software Engineer',
+                    'Accountant',
+                    'Legal Team Lead',
+                    'Lawyer',
+                ],
+            },
+            //fix manager here, add it
+        ])
+
+        .then((answers) => {
+            const query =
+                "INSERT INTO employee (first_name, last_name, job_title) VALUES (?,?,?)";
+            connection.query(
+                query,
+                [
+                    answers.first_name,
+                    answers.last_name,
+                    answers.job_title,
+                ],
+                (err, res) => {
+                    if (err) throw err;
+                    console.log(answers);
+
+                    const query = "SELECT * FROM employee";
+                    connection.query(query, (err, res) => {
+                        if (err) throw err;
+                        console.log();
+                        console.table(res);
+                        start();
+                    });
+                }
+            );
+        });
+}
