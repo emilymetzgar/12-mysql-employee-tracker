@@ -73,14 +73,17 @@ function start() {
 start();
 
 function viewDept() {
-    const query = `
-    SELECT employee.id
-    CONCAT(employee.first_name, ' ', emoloyee.last_name) 
-    AS EMPLOYEE,
-    department.name AS DEPARTMENT,
-    job.job_title,
-    job.salary AS SALARY,
-    `;
+    const query = 
+    `SELECT 
+    department.id AS 'DEPT ID',
+    department.department_name AS DEPTARTMENT,
+    employee.id 'EMP ID', 
+    employee.first_name 'FIRST NAME', 
+    employee.last_name 'LAST NAME', 
+    job.job_title AS 'JOB TITLE', job.salary AS SALARY
+    FROM employee LEFT JOIN job on employee.role_id = job.id 
+    LEFT JOIN department on job.department_id = department.id 
+    GROUP BY department.id, department.department_name`;
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
