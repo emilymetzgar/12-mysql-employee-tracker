@@ -65,7 +65,7 @@ function start() {
 
                 //} else if (answers.main === "Update Manager") {
                 //updateManager();
-                //} else if (answers.main === "Done") {
+                } else if (answers.main === "Done") {
                 connection.end();
             }
         });
@@ -206,10 +206,10 @@ function addDept() {
     ])
         .then((answers) => {
             const query =
-                "INSERT INTO department (job_department_name) VALUES (?)"
+                "INSERT INTO department (department_name) VALUES (?)"
             connection.query(
                 query,
-                [answers.job_department_name],
+                [answers.department_name],
                 (err, res) => {
                     if (err) throw err;
 
