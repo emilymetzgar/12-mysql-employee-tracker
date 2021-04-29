@@ -26,28 +26,28 @@ function start() {
         .prompt([{
             type: "list",
             name: "home",
-            message: "Hello! Welcom to My Employee Tracker. Please select an Action below.",
+            message: "Hello! Welcome to My Employee Tracker. Please select an Action below.",
             choices: [
-                "View All From Department",
-                "View All Roles",
+                "View By Department",
+                "View By Role",
                 "View All Employees",
                 "Add A Role",
                 "Add A Department",
                 "Add An Employee",
-                "Update A Role",
-                "Update The Manager",
+                //"Update A Role",
+                //"Update The Manager",
                 "Get Out of Here",
             ],
         }, ])
 
         .then((answers) => {
-            if (answers.home === "View All From Department") {
+            if (answers.home === "View By Department") {
                 viewDept();
 
             } else if (answers.home === "View All Employees") {
                 viewEmployee();
 
-            } else if (answers.home === "View All Roles") {
+            } else if (answers.home === "View By Role") {
                 viewRole();
 
             } else if (answers.home === "Add An Employee") {
@@ -59,13 +59,13 @@ function start() {
             } else if (answers.home === "Add A Department") {
                 addDept();
 
-            } else if (answers.home === "Update A Role") {
-                updateRole();
+            //} else if (answers.home === "Update A Role") {
+                //updateRole();
 
-            } else if (answers.home === "Update The Manager") {
-                updateManager();
 
-            } else if (answers.home === "Get Out of Here") {
+                //} else if (answers.main === "Update Manager") {
+                //updateManager();
+                //} else if (answers.main === "Done") {
                 connection.end();
             }
         });
@@ -73,7 +73,14 @@ function start() {
 start();
 
 function viewDept() {
-    const query = "SELECT * FROM department";
+    const query = `
+    SELECT employee.id
+    CONCAT(employee.first_name, ' ', emoloyee.last_name) 
+    AS EMPLOYEE,
+    department.name AS DEPARTMENT,
+    job.job_title,
+    job.salary AS SALARY,
+    `;
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -82,7 +89,15 @@ function viewDept() {
 }
 
 function viewEmployee() {
-    const query = "SELECT * FROM employee";
+    const query = 
+    `SELECT employee.id AS ID,
+    employee.first_name AS FIRSTNAME,
+    employee.last_name AS LASTNAME,
+    job.job_title AS JOB,
+    job.salary AS SALARY,
+    department.department_name AS DEPARTMENT
+    FROM employee LEFT JOIN job ON employee.role_id = job.id
+    LEFT JOIN department ON job.department_id = department.id`;
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -154,11 +169,11 @@ function addEmployee() {
                 ],
                 (err, res) => {
                     if (err) throw err;
-                    
+
                     const query = "SELECT * FROM employee";
                     connection.query(query, (err, res) => {
                         if (err) throw err;
-                        
+
                         console.table(res);
                         start();
                     });
@@ -178,19 +193,19 @@ function addDept() {
             const query =
                 "INSERT INTO department (job_department_name) VALUES (?)"
             connection.query(
-            query,
-            [answers.job_department_name],
-            (err, res) => {
-                if (err) throw err;
-            
-                const query = "SELECT * FROM department";
-                connection.query(query, (err, res) => {
+                query,
+                [answers.job_department_name],
+                (err, res) => {
                     if (err) throw err;
-                    
-                    console.table(res);
-                    start();
-                });
-            }
+
+                    const query = "SELECT * FROM department";
+                    connection.query(query, (err, res) => {
+                        if (err) throw err;
+
+                        console.table(res);
+                        start();
+                    });
+                }
             )
 
         });
@@ -198,54 +213,55 @@ function addDept() {
 
 async function addRole() {
     await inquirer
-      .prompt([{
-          name: "job_title",
-          message: "Type a Job Title to Add",
-          type: "input",
-        },
-        {
-          name: "salary",
-          message: "Type the Salary for the New Job Title",
-          type: "input",
-        },
+        .prompt([{
+                name: "job_title",
+                message: "Type a Job Title to Add",
+                type: "input",
+            },
+            {
+                name: "salary",
+                message: "Type the Salary for the New Job Title",
+                type: "input",
+            },
 
-        {
-            name: "department_id",
-            message: "Add Department ID",
-            type: "list",
-            choices: [
-                'Department ID will be 1',
-                'Department has to be 1',
-                'Click here for 1',
-            ],
-        },
-        {
-          name: "job_department_name",
-          message: "Select One of the Departments for New Job Title",
-          type: "list",
-          choices: ['Sales',
-          'Engineering',
-          'Finance',
-          'Legal'],
-        },
+            {
+                name: "department_id",
+                message: "Add Department ID",
+                type: "list",
+                choices: [
+                    'Department ID will be 1',
+                    'Department has to be 1',
+                    'Click here for 1',
+                ],
+            },
+            {
+                name: "job_department_name",
+                message: "Select One of the Departments for New Job Title",
+                type: "list",
+                choices: ['Sales',
+                    'Engineering',
+                    'Finance',
+                    'Legal'
+                ],
+            },
 
-      ])
-      .then((answers) => {
-        const query =
-          "INSERT INTO job (job_title, salary, department_id, job_department_name) VALUES (?,?, 1, ?)";
-        connection.query(
-          query,
-          [answers.job_title, answers.salary, answers.job_department_name],
-          (err, res) => {
-            if (err) throw err;
-        
-            const query = "SELECT * FROM job";
-            connection.query(query, (err, res) => {
-              if (err) throw err;
-              console.table(res);
-              start();
-            });
-          }
-        );
-      });
-  }
+        ])
+        .then((answers) => {
+            const query =
+                "INSERT INTO job (job_title, salary, department_id, job_department_name) VALUES (?,?, 1, ?)";
+            connection.query(
+                query,
+                [answers.job_title, answers.salary, answers.job_department_name],
+                (err, res) => {
+                    if (err) throw err;
+
+                    const query = "SELECT * FROM job";
+                    connection.query(query, (err, res) => {
+                        if (err) throw err;
+                        console.table(res);
+                        start();
+                    });
+                }
+            );
+        });
+}
