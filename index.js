@@ -176,10 +176,10 @@ function addDept() {
         }, ])
         .then((answers) => {
             const query =
-                "INSERT INTO department (department_name) VALUES (?)"
+                "INSERT INTO department (job_department_name) VALUES (?)"
             connection.query(
             query,
-            [answers.department_name],
+            [answers.job_department_name],
             (err, res) => {
                 if (err) throw err;
             
@@ -195,3 +195,57 @@ function addDept() {
 
         });
 }
+
+async function addRole() {
+    await inquirer
+      .prompt([{
+          name: "job_title",
+          message: "Type a Job Title to Add",
+          type: "input",
+        },
+        {
+          name: "salary",
+          message: "Type the Salary for the New Job Title",
+          type: "input",
+        },
+
+        {
+            name: "department_id",
+            message: "Add Department ID",
+            type: "list",
+            choices: [
+                'Department ID will be 1',
+                'Department has to be 1',
+                'Click here for 1',
+            ],
+        },
+        {
+          name: "job_department_name",
+          message: "Select One of the Departments for New Job Title",
+          type: "list",
+          choices: ['Sales',
+          'Engineering',
+          'Finance',
+          'Legal'],
+        },
+
+      ])
+      .then((answers) => {
+        const query =
+          "INSERT INTO job (job_title, salary, department_id, job_department_name) VALUES (?,?, 1, ?)";
+        connection.query(
+          query,
+          [answers.job_title, answers.salary, answers.job_department_name],
+          (err, res) => {
+            if (err) throw err;
+        
+            const query = "SELECT * FROM job";
+            connection.query(query, (err, res) => {
+              if (err) throw err;
+              console.table(res);
+              start();
+            });
+          }
+        );
+      });
+  }

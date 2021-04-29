@@ -1,5 +1,3 @@
-
-
 DROP DATABASE IF EXISTS employee_tracker_db;
 
 CREATE DATABASE employee_tracker_db;
@@ -16,9 +14,10 @@ CREATE TABLE department (
 CREATE TABLE job  (
     id INTEGER auto_increment NOT NULL,
     job_title VARCHAR (30),
-    salary DECIMAL (10,4),
+    salary DECIMAL (15,3nod),
     PRIMARY KEY (id),
-    department_id INT NOT NULL
+    department_id INT NOT NULL,
+    job_department_name VARCHAR (30) NULL
 );
 
 CREATE TABLE employee(
@@ -40,16 +39,16 @@ VALUES
 ('Legal');
 
 INSERT INTO job
-    (job_title, salary, department_id)
+    (job_title, salary, department_id, job_department_name)
 VALUES 
 
-('Sales Lead', 100000, 1),
-('Salesperson', 80000, 2),
-('Lead Engineer', 150000, 3),
-('Software Engineer', 120000, 4),
-('Accountant', 125000, 6),
-('Legal Team Lead', 250000, 7),
-('Lawyer', 190000, 8);
+('Sales Lead', 100000, 1, 'Sales'),
+('Salesperson', 80000, 2, 'Sales'),
+('Lead Engineer', 150000, 3, 'Engineering'),
+('Software Engineer', 120000, 4, 'Engineering'),
+('Accountant', 125000, 6, 'Finance'),
+('Legal Team Lead', 250000, 7, 'Legal'),
+('Lawyer', 190000, 8, 'Legal');
 
 INSERT INTO employee 
     (first_name, last_name, role_id, job_name)
@@ -62,4 +61,8 @@ VALUES
 ('Malia', 'Brown', 6, 'Legal Team Lead'),
 ('Sarah', 'Lourd', 7, 'Legal Team Lead'),
 ('Tom', 'Allen', 8, 'Lawyer');
+
+
+
+
 
