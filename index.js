@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
     user: 'root',
 
     // Your password
-    password: ' ',
+    password: 'rootie',
     database: 'employee_tracker_db',
 });
 // connect to the mysql server and sql database
@@ -119,12 +119,12 @@ function addEmployee() {
                 message: "Add Employee's ID",
                 type: "list",
                 choices: [
-                 'Employee ID will be 1',
-                 'Employee has to be 1',
-                 'Click here for 1',
+                    'Employee ID will be 1',
+                    'Employee has to be 1',
+                    'Click here for 1',
                 ],
             },
-    
+
             {
                 name: "job_name",
                 message: "Add Employee's role",
@@ -139,7 +139,7 @@ function addEmployee() {
                     'Lawyer',
                 ],
             },
-            //fix manager here, add it
+
         ])
 
         .then((answers) => {
@@ -154,16 +154,44 @@ function addEmployee() {
                 ],
                 (err, res) => {
                     if (err) throw err;
-                    console.log(answers);
-
+                    
                     const query = "SELECT * FROM employee";
                     connection.query(query, (err, res) => {
                         if (err) throw err;
-                        console.log();
+                        
                         console.table(res);
                         start();
                     });
                 }
             );
+        });
+}
+
+function addDept() {
+    inquirer
+        .prompt([{
+            name: "department_name",
+            message: "Type a Department to add",
+            type: "input",
+        }, ])
+        .then((answers) => {
+            const query =
+                "INSERT INTO department (department_name) VALUES (?)"
+            connection.query(
+            query,
+            [answers.department_name],
+            (err, res) => {
+                if (err) throw err;
+            
+                const query = "SELECT * FROM department";
+                connection.query(query, (err, res) => {
+                    if (err) throw err;
+                    
+                    console.table(res);
+                    start();
+                });
+            }
+            )
+
         });
 }

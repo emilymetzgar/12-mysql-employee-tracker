@@ -1,4 +1,4 @@
---i need to add manager, foregin key info, and manager id number
+
 
 DROP DATABASE IF EXISTS employee_tracker_db;
 
