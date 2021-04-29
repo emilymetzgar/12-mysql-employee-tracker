@@ -59,7 +59,7 @@ function start() {
             } else if (answers.home === "Add A Department") {
                 addDept();
 
-            //} else if (answers.home === "Update A Role") {
+                //} else if (answers.home === "Update A Role") {
                 //updateRole();
 
 
@@ -73,8 +73,8 @@ function start() {
 start();
 
 function viewDept() {
-    const query = 
-    `SELECT 
+    const query =
+        `SELECT 
     department.id AS 'DEPT ID',
     department.department_name AS DEPTARTMENT,
     employee.id 'EMP ID', 
@@ -92,12 +92,14 @@ function viewDept() {
 }
 
 function viewEmployee() {
-    const query = 
-    `SELECT employee.id AS ID,
+    const query =
+        `SELECT employee.id AS ID,
     employee.first_name AS FIRSTNAME,
     employee.last_name AS LASTNAME,
+    job.id AS 'JOB ID',
     job.job_title AS JOB,
     job.salary AS SALARY,
+    department.id AS 'DEPT ID',
     department.department_name AS DEPARTMENT
     FROM employee LEFT JOIN job ON employee.role_id = job.id
     LEFT JOIN department ON job.department_id = department.id`;
@@ -109,7 +111,16 @@ function viewEmployee() {
 }
 
 function viewRole() {
-    const query = "SELECT * FROM job";
+    const query =
+        `SELECT 
+    job.job_title AS 'JOB TITLE',
+    department.department_name AS DEPTARTMENT,
+    employee.first_name 'FIRST NAME', 
+    employee.last_name 'LAST NAME', 
+    job.salary AS SALARY
+    FROM employee LEFT JOIN job on employee.role_id = job.id  
+    LEFT JOIN department on job.department_id = department.id`;
+
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -191,7 +202,8 @@ function addDept() {
             name: "department_name",
             message: "Type a Department to add",
             type: "input",
-        }, ])
+        }, 
+    ])
         .then((answers) => {
             const query =
                 "INSERT INTO department (job_department_name) VALUES (?)"
@@ -209,13 +221,13 @@ function addDept() {
                         start();
                     });
                 }
-            )
+            );
 
         });
 }
 
-async function addRole() {
-    await inquirer
+function addRole() {
+    inquirer
         .prompt([{
                 name: "job_title",
                 message: "Type a Job Title to Add",
@@ -251,12 +263,12 @@ async function addRole() {
         ])
         .then((answers) => {
             const query =
-                "INSERT INTO job (job_title, salary, department_id, job_department_name) VALUES (?,?, 1, ?)";
+                "INSERT INTO job (job_title, salary, department_id , job_department_name) VALUES (?,?, 1, ?)";
             connection.query(
                 query,
                 [answers.job_title, answers.salary, answers.job_department_name],
                 (err, res) => {
-                    if (err) throw err;
+                    if (err) throw err
 
                     const query = "SELECT * FROM job";
                     connection.query(query, (err, res) => {
