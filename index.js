@@ -19,6 +19,7 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
     // run the start function after the connection is made to prompt the user
+    start();
 });
 
 function start() {
@@ -65,27 +66,21 @@ function start() {
 
                 //} else if (answers.main === "Update Manager") {
                 //updateManager();
-                } else if (answers.main === "Done") {
-                connection.end();
+            } else if (answers.main === "Get Out of Here") {
+                process.exit(1);
             }
         });
 }
-start();
+
 
 function viewDept() {
     const query =
-        `SELECT 
-    department.id AS 'DEPT ID',
-    department.department_name AS DEPTARTMENT,
-    employee.id 'EMP ID', 
-    employee.first_name 'FIRST NAME', 
-    employee.last_name 'LAST NAME', 
-    job.job_title AS 'JOB TITLE', job.salary AS SALARY
-    FROM employee LEFT JOIN job on employee.role_id = job.id 
-    LEFT JOIN department on job.department_id = department.id 
-    GROUP BY department.id, department.department_name`;
+        `SELECT * FROM department`;
     connection.query(query, (err, res) => {
         if (err) throw err;
+        console.log(' ');
+        console.log(` ALL DEPARMENTS:`);
+        console.log(' ');
         console.table(res);
         start();
     });
@@ -101,10 +96,13 @@ function viewEmployee() {
     job.salary AS SALARY,
     department.id AS 'DEPT ID',
     department.department_name AS DEPARTMENT
-    FROM employee LEFT JOIN job ON employee.role_id = job.id
+    FROM employee LEFT JOIN job ON employee.job_id = job.id
     LEFT JOIN department ON job.department_id = department.id`;
     connection.query(query, (err, res) => {
         if (err) throw err;
+        console.log(' ');
+        console.log(` ALL EMPLOYEES:`);
+        console.log(' ');
         console.table(res);
         start();
     });
@@ -112,17 +110,13 @@ function viewEmployee() {
 
 function viewRole() {
     const query =
-        `SELECT 
-    job.job_title AS 'JOB TITLE',
-    department.department_name AS DEPTARTMENT,
-    employee.first_name 'FIRST NAME', 
-    employee.last_name 'LAST NAME', 
-    job.salary AS SALARY
-    FROM employee LEFT JOIN job on employee.role_id = job.id  
-    LEFT JOIN department on job.department_id = department.id`;
+        `SELECT * FROM job`;
 
     connection.query(query, (err, res) => {
         if (err) throw err;
+        console.log(' ');
+        console.log(` ALL ROLES:`);
+        console.log(' ');
         console.table(res);
         start();
     });
@@ -142,57 +136,62 @@ function addEmployee() {
                 message: "Add Employee's last name",
                 type: "input",
             },
-
-            {
-                name: "role_id",
-                message: "Add Employee's ID",
-                type: "list",
-                choices: [
-                    'Employee ID will be 1',
-                    'Employee has to be 1',
-                    'Click here for 1',
-                ],
-            },
-
-            {
-                name: "job_name",
-                message: "Add Employee's role",
-                type: "list",
-                choices: [
-                    'Sales Lead',
-                    'Salesperson',
-                    'Lead Engineer',
-                    'Software Engineer',
-                    'Accountant',
-                    'Legal Team Lead',
-                    'Lawyer',
-                ],
-            },
-
         ])
 
         .then((answers) => {
             const query =
-                "INSERT INTO employee (first_name, last_name, role_id, job_name) VALUES (?,?, 1 ,?)"
+                "SELECT * FROM job"
             connection.query(
                 query,
-                [
-                    answers.first_name,
-                    answers.last_name,
-                    answers.job_name,
-                ],
                 (err, res) => {
-                    if (err) throw err;
+                    console.log(res)
+                    jobChoices = res.map((job) => {
+                        return {
+                            value: job.id,
+                            name: job.job_title,
+                        }
+                    })
+                    console.log(jobChoices)
 
-                    const query = "SELECT * FROM employee";
-                    connection.query(query, (err, res) => {
-                        if (err) throw err;
+                    inquirer
+                        .prompt([{
+                            name: "job",
+                            message: "Which role would you like to add to your employee?",
+                            type: "list",
+                            choices: jobChoices,
+                        }]).then((jobAnswers) => {
+                             console.log(jobAnswers)   
+                            const query =
+                                "INSERT INTO employee (first_name, last_name, job_id, manager_id) VALUES (?,?,?,?)"
+                            connection.query(
+                                query,
+                                [
+                                    answers.first_name,
+                                    answers.last_name,
+                                    jobAnswers.job,
+                                    null,
+                                ],
+                                (err, res) => {
+                                    if (err) throw err;
 
-                        console.table(res);
-                        start();
-                    });
+                                    const query = "SELECT * FROM employee";
+                                    connection.query(query, (err, res) => {
+                                        if (err) throw err;
+
+                                        console.log(' ');
+                                        console.log(` You Added A New Employee!:`);
+                                        console.log(' ');
+
+                                        console.table(res);
+                                        start();
+                                    });
+                                }
+                            );
+
+
+                        })
                 }
-            );
+            )
         });
 }
 
@@ -202,8 +201,7 @@ function addDept() {
             name: "department_name",
             message: "Type a Department to add",
             type: "input",
-        }, 
-    ])
+        }, ])
         .then((answers) => {
             const query =
                 "INSERT INTO department (department_name) VALUES (?)"
@@ -216,6 +214,10 @@ function addDept() {
                     const query = "SELECT * FROM department";
                     connection.query(query, (err, res) => {
                         if (err) throw err;
+
+                        console.log(' ');
+                        console.log(` You Added A New Department!:`);
+                        console.log(' ');
 
                         console.table(res);
                         start();
@@ -236,7 +238,7 @@ function addRole() {
             {
                 name: "salary",
                 message: "Type the Salary for the New Job Title",
-                type: "input",
+                type: "number",
             },
 
             {
@@ -263,7 +265,7 @@ function addRole() {
         ])
         .then((answers) => {
             const query =
-                "INSERT INTO job (job_title, salary, department_id , job_department_name) VALUES (?,?, 1, ?)";
+                `INSERT INTO job (job_title, salary, department_id) VALUES (?,?, 1)`;
             connection.query(
                 query,
                 [answers.job_title, answers.salary, answers.job_department_name],
@@ -273,8 +275,57 @@ function addRole() {
                     const query = "SELECT * FROM job";
                     connection.query(query, (err, res) => {
                         if (err) throw err;
+
+                        console.log(' ');
+                        console.log(` You Added A New Role!!:`);
+                        console.log(' ');
+
                         console.table(res);
                         start();
+                    });
+                }
+            );
+        });
+}
+
+function updateRole() {
+    inquirer
+        .prompt([{
+                name: "first_name",
+                message: "First name of person to update role?",
+                type: "input",
+            },
+            {
+                name: "last_name",
+                message: "Last name of person to update role?",
+                type: "input",
+            },
+            {
+                name: "update_role",
+                message: "Which role to update?",
+                type: "list",
+                choices: [
+                    "HR Employee",
+                    "Back End Developer",
+                    "Front End Developer",
+                    "Sale Team",
+                ],
+            },
+        ])
+        .then((answers) => {
+            console.log(answers);
+            const queryUpdateRole =
+                "UPDATE employee SET role_title=? WHERE first_name=? AND last_name=?";
+            connection.query(
+                queryUpdateRole,
+                [answers.update_role, answers.first_name, answers.last_name], //no answers.department_id
+                (err, res) => {
+                    if (err) throw err;
+                    const queryUpdateRoleTable = "SELECT * FROM employee";
+                    connection.query(queryUpdateRoleTable, (err, res) => {
+                        if (err) throw err;
+                        console.table(res);
+                        whatToDo();
                     });
                 }
             );
