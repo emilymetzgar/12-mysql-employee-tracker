@@ -26,6 +26,7 @@ first_name VARCHAR(30),
 last_name VARCHAR(30),
 job_id INT NOT NULL, 
 manager_id INT,
+job_title VARCHAR(30), 
 FOREIGN KEY (manager_id) references employee(id),
 FOREIGN KEY (job_id) references job(id),
 PRIMARY KEY (id)
@@ -53,10 +54,10 @@ VALUES
 INSERT INTO employee 
     (first_name, last_name, job_title, job_id, manager_id)
 VALUES
-('John', 'Doe', 'Sales Lead' 1, null),
+('John', 'Doe', 'Sales Lead', 1, null),
 ('Mike', 'Chan', 'Salesperson', 2, 1),
 ('Ashley', 'Rodriguez', 'Accountant', 3, null),
 ('Kevin', 'Tupik', 'Lawyer', 4, 3),
 ('Malia', 'Brown', 'Lead Engineer', 6, null),
 ('Kunal', 'Singh', 'Software Engineer', 5, 6),
-('Sarah', 'Lourd', 'Legal Team Lead' 7, null)
+('Sarah', 'Lourd', 'Legal Team Lead', 7, null);
