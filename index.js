@@ -285,77 +285,38 @@ function addRole() {
 }
 
 function updateRole() {
-    const query = 
-    "SELECT id FROM employee"
-    connection.query(
-        query, 
-        (err, res) =>
-        
-        empIds = res.map((employee) => {
-            return {
-                value: id,
-               
-            }
-            
-           
-   
-        })
-    }
-}
-
-    /*inquirer 
-        .prompt([{
-            name: "update_role",
-            message: "Look at all of the employees, select an employee by their ID number in order to update their role",
-            type: "list",
-            choices: []
-        }])
-    
-
-}
-
     inquirer
-        .prompt([
-            {
-                name: "choose_name",
-                message: "Whose role do you want to update?",
+        .prompt([{
+                name: "update",
+                message: "Ready to Update A Role?!",
                 type: "list",
-                choices: 
+                choices: ['yes!'],
             },
-        ])
-        .then((answers) => {
-            console.log(answers);
-            
-            const query = "SELECT * FROM employee";
-                    connection.query(query, (err, res) => {
-                        console.log(res)
-                        roleUpdates = res.map((employee) => { 
-                            
-                            return {
-                                value: employee.first_name,
-                                
 
+        ])
+
+        .then((answers) => {
+                const query =
+                    "SELECT * FROM employee"
+                connection.query(
+                    query,
+                    (err, res) => {
+                    if (err) throw err;
+                    console.log(res) 
+                    
+                    empIds = res.map((employee) => {
+                        return {
+                            value: employee.id,
                         }
                     })
 
+                    console.log(empIds)
                     
-                    console.log(roleUpdates)
+                    console.table(res);
+                    start();
+                });
+            }
+        );
+    };
 
-                        const query =
-                        "UPDATE employee SET job_id=? WHERE first_name=? AND last_name=?";
-            connection.query(
-                query,
-                [answers.update_role, answers.first_name, answers.last_name],
-                (err, res) => {
-                   if (err) throw err;
-                    
-                        if (err) throw err;
-                       console.table(res);
-                        start();
-                    });
-                }
-            );
-        });
-}
-
-*/
+     
