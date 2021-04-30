@@ -286,37 +286,48 @@ function addRole() {
 
 function updateRole() {
     inquirer
-        .prompt([{
-                name: "update",
-                message: "Ready to Update A Role?!",
-                type: "list",
-                choices: ['yes!'],
-            },
-
-        ])
-
-        .then((answers) => {
-                const query =
-                    "SELECT * FROM employee"
-                connection.query(
-                    query,
-                    (err, res) => {
-                    if (err) throw err;
-                    console.log(res) 
-                    
-                    empIds = res.map((employee) => {
-                        return {
-                            value: employee.id,
-                        }
-                    })
-
-                    console.log(empIds)
-                    
-                    console.table(res);
-                    start();
-                });
-            }
+      .prompt([
+        {
+            name: "first_name",
+            message: "First name of person to update role?",
+            type: "input",
+          },
+          {
+            name: "last_name",
+            message: "Last name of person to update role?",
+            type: "input",
+          },
+        {
+          name: "update_role",
+          message: "Which Role to Update to?",
+          type: "list",
+          choices: [
+            'Sales Lead',
+            'Salesperson', 
+            'Lead Engineer', 
+            'Software Engineer', 
+            'Accountant', 
+            'Legal Team Lead', 
+            'Lawyer'
+          ],
+        },
+      ])
+      .then((answers) => {
+        console.log(answers);
+        const query =
+        "UPDATE employee SET job_title=? WHERE first_name=? AND last_name=?";
+        connection.query(
+          query,
+          [answers.update_role, answers.first_name, answers.last_name], 
+          (err, res) => {
+            if (err) throw err;
+            const query = "SELECT * FROM employee";
+            connection.query(query, (err, res) => {
+              if (err) throw err;
+              console.table(res);
+              start();
+            });
+          }
         );
-    };
-
-     
+      });
+  }
