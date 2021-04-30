@@ -39,7 +39,9 @@ function start() {
                 "Get Out of Here",
             ],
         }, ])
-
+        //uses inquirer to prompt user
+        //depending on users answers, the following functions will run
+        //code for each function written below
         .then((answers) => {
             if (answers.home === "View By Department") {
                 viewDept();
@@ -68,7 +70,8 @@ function start() {
         });
 }
 
-
+//function to run when user selects view by department
+//queries mysql,schema.sql to get info from tables
 function viewDept() {
     const query =
         `SELECT * FROM department`;
@@ -81,19 +84,21 @@ function viewDept() {
         start();
     });
 }
-
+//function to run when user selects view all employees
+//queries mysql,schema.sql to get info from tables
+//uses joins to include info from more than one table
 function viewEmployee() {
     const query =
-        `SELECT employee.id AS ID,
-    employee.first_name AS FIRSTNAME,
-    employee.last_name AS LASTNAME,
-    job.id AS 'JOB ID',
-    job.job_title AS JOB,
-    job.salary AS SALARY,
-    department.id AS 'DEPT ID',
-    department.department_name AS DEPARTMENT
-    FROM employee LEFT JOIN job ON employee.job_id = job.id
-    LEFT JOIN department ON job.department_id = department.id`;
+        `SELECT employee.id,
+        employee.first_name,
+        employee.last_name,
+        job.id,
+        job.job_title,
+        job.salary,
+        department.id,
+        department.department_name
+        FROM employee INNER JOIN job ON employee.job_id = job.id
+        INNER JOIN department ON job.department_id = department.id`;
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log(' ');
@@ -118,8 +123,8 @@ function viewRole() {
     });
 }
 
-//add employee
-
+//function to run when user selects add employee
+//queries mysql,schema.sql to get info from tables
 function addEmployee() {
     inquirer
         .prompt([{
@@ -147,16 +152,14 @@ function addEmployee() {
                             name: job.job_title,
                         }
                     })
-                    console.log(jobChoices)
-
                     inquirer
                         .prompt([{
                             name: "job",
                             message: "Which role would you like to add to your employee?",
                             type: "list",
                             choices: jobChoices,
+                            
                         }]).then((jobAnswers) => {
-                            console.log(jobAnswers)
                             const query =
                                 "INSERT INTO employee (first_name, last_name, job_id, manager_id) VALUES (?,?,?,?)"
                             connection.query(
@@ -177,20 +180,18 @@ function addEmployee() {
                                         console.log(' ');
                                         console.log(` You Added A New Employee!:`);
                                         console.log(' ');
-
                                         console.table(res);
                                         start();
                                     });
                                 }
                             );
-
-
                         })
                 }
             )
         });
 }
-
+//function to run when user selects add department
+//queries mysql,schema.sql to get info from tables
 function addDept() {
     inquirer
         .prompt([{
@@ -220,10 +221,10 @@ function addDept() {
                     });
                 }
             );
-
         });
-}
-
+    }
+//function to run when user selects add role
+//queries mysql,schema.sql to get info from tables
 function addRole() {
     inquirer
         .prompt([{
@@ -282,52 +283,52 @@ function addRole() {
                 }
             );
         });
-}
-
+    }
+//function to run when user selects update role
+//queries mysql,schema.sql to get info from tables
 function updateRole() {
     inquirer
-      .prompt([
-        {
-            name: "first_name",
-            message: "First name of person to update role?",
-            type: "input",
-          },
-          {
-            name: "last_name",
-            message: "Last name of person to update role?",
-            type: "input",
-          },
-        {
-          name: "update_role",
-          message: "Which Role to Update to?",
-          type: "list",
-          choices: [
-            'Sales Lead',
-            'Salesperson', 
-            'Lead Engineer', 
-            'Software Engineer', 
-            'Accountant', 
-            'Legal Team Lead', 
-            'Lawyer'
-          ],
-        },
-      ])
-      .then((answers) => {
-        console.log(answers);
-        const query =
-        "UPDATE employee SET job_title=? WHERE first_name=? AND last_name=?";
-        connection.query(
-          query,
-          [answers.update_role, answers.first_name, answers.last_name], 
-          (err, res) => {
-            if (err) throw err;
-            const query = "SELECT * FROM employee";
-            connection.query(query, (err, res) => {
-              if (err) throw err;
-              console.table(res);
-              start();
-            });
-          }
-        );
-      });
-  }
+        .prompt([{
+                name: "first_name",
+                message: "First name of person to update role?",
+                type: "input",
+            },
+            {
+                name: "last_name",
+                message: "Last name of person to update role?",
+                type: "input",
+            },
+            {
+                name: "update_role",
+                message: "Which Role to Update to?",
+                type: "list",
+                choices: [
+                    'Sales Lead',
+                    'Salesperson',
+                    'Lead Engineer',
+                    'Software Engineer',
+                    'Accountant',
+                    'Legal Team Lead',
+                    'Lawyer'
+                ],
+            },
+        ])
+        .then((answers) => {
+            console.log(answers);
+            const query =
+                "UPDATE employee SET job_title=? WHERE first_name=? AND last_name=?";
+            connection.query(
+                query,
+                [answers.update_role, answers.first_name, answers.last_name],
+                (err, res) => {
+                    if (err) throw err;
+                    const query = "SELECT * FROM employee";
+                    connection.query(query, (err, res) => {
+                        if (err) throw err;
+                        console.table(res);
+                        start();
+                    });
+                }
+            );
+        });
+    }
